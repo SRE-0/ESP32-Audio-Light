@@ -15,7 +15,7 @@ TEST_SOURCES := tests/unit_tests.cpp \
                 src/effects/EffectCatalog.cpp \
                 src/effects/EffectEngine.cpp
 INCLUDES := -Iinclude -I.
-COMMON_FLAGS := -std=c++17 -O3 -march=native -ffast-math -funroll-loops \
+COMMON_FLAGS := -std=c++17 -O3 -march=x86-64 -mtune=generic -ffast-math -funroll-loops \
                 -Wall -Wextra -Wpedantic -DNDEBUG $(INCLUDES)
 PIPEWIRE_CFLAGS = $(shell pkg-config --cflags libpipewire-0.3)
 PIPEWIRE_LIBS = $(shell pkg-config --libs libpipewire-0.3)

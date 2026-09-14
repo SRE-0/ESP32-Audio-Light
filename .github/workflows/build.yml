@@ -1,0 +1,62 @@
+name: Build
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes build-essential libfftw3-dev libpipewire-0.3-dev
+
+      - name: Build Linux version
+        run: make --always-make linux
+
+      - name: Upload Linux executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-light-sync-linux
+          path: audio_light_sync
+          if-no-files-found: error
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install MSYS2 build dependencies
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            make
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-fftw
+
+      - name: Build Windows version
+        shell: msys2 {0}
+        run: make --always-make windows CXX_WIN=g++
+
+      - name: Upload Windows executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-light-sync-windows
+          path: |
+            audio_light_sync.exe
+            libfftw3f-3.dll
+          if-no-files-found: error

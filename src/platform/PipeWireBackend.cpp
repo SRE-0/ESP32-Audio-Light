@@ -130,14 +130,14 @@ private:
         }
         spa_data& source = buffer->buffer->datas[0];
         const std::uint32_t offset = source.chunk ? source.chunk->offset : 0;
-        const auto* bytes = static_cast<const std::uint8_t*>(source.data);
-        const auto* data = bytes
-            ? reinterpret_cast<const float*>(bytes + offset)
+        const auto* rawBytes = static_cast<const std::uint8_t*>(source.data);
+        const auto* data = rawBytes
+            ? reinterpret_cast<const float*>(rawBytes + offset)
             : nullptr;
-        const std::uint32_t bytes =
+        const std::uint32_t byteCount =
             source.chunk ? source.chunk->size : source.maxsize;
         if (data && callback_) {
-            callback_(data, bytes / sizeof(float));
+            callback_(data, byteCount / sizeof(float));
         }
         pw_stream_queue_buffer(stream_, buffer);
     }

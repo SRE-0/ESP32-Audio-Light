@@ -18,7 +18,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install --yes build-essential libfftw3-dev libpipewire-0.3-dev
+          sudo apt-get install --yes build-essential pkg-config libfftw3-dev libpipewire-0.3-dev
 
       - name: Build Linux version
         run: make --always-make linux

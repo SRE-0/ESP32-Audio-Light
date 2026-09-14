@@ -17,8 +17,10 @@ TEST_SOURCES := tests/unit_tests.cpp \
 INCLUDES := -Iinclude -I.
 COMMON_FLAGS := -std=c++17 -O3 -march=native -ffast-math -funroll-loops \
                 -Wall -Wextra -Wpedantic -DNDEBUG $(INCLUDES)
-CFLAGS_LINUX := $(COMMON_FLAGS) -flto
-LDFLAGS_LINUX := -lpipewire-0.3 -lfftw3f -lpthread -lm
+PIPEWIRE_CFLAGS = $(shell pkg-config --cflags libpipewire-0.3)
+PIPEWIRE_LIBS = $(shell pkg-config --libs libpipewire-0.3)
+CFLAGS_LINUX = $(COMMON_FLAGS) -flto $(PIPEWIRE_CFLAGS)
+LDFLAGS_LINUX = $(PIPEWIRE_LIBS) -lfftw3f -lpthread -lm
 CFLAGS_WIN := $(COMMON_FLAGS) \
               -DWIN32_LEAN_AND_MEAN -DNOMINMAX -DUNICODE -D_UNICODE
 LDFLAGS_WIN := -L. -static-libgcc -static-libstdc++ \
